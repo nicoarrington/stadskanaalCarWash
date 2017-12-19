@@ -1,0 +1,122 @@
+<div class="wash-container">
+	<form 
+		[ngClass]="{'content-blur': displayPriceMessage }"
+		[formGroup]="washForm" 
+		(ngSubmit)="onSubmit()" 
+		class="wash-form">
+		
+		<p>Enter the details bellow to get a car wash. <br> 
+		<small>Fields marked with * are required.</small></p>
+		
+		<div class="form-group">
+			<label>Licence Plate Number *</label>
+			<input 
+				type="text" 
+				class="form-control" 
+				placeholder="Enter Licence Plate Number"
+				ngModel
+				formControlName="vehicleLicensePlate">
+			<span 
+				class="help-block" 
+				*ngIf="!washForm.get('vehicleLicensePlate').valid && washForm.get('vehicleLicensePlate').touched">
+				<span 
+					*ngIf="washForm.get('vehicleLicensePlate').errors['required']" 
+					class="help-block">This field is required.</span>
+				<span 
+					*ngIf="washForm.get('vehicleLicensePlate').errors['vehicleIsStolen']" 
+					class="help-block">Hm... Sorry, it looks like we cannot accept your vehicle. </span>
+			</span>
+		</div>
+
+		<hr>
+
+		<div class="form-group">
+			<label>What is the type of your vehicle? *</label>
+			<label>
+				<input 
+					type="radio" 
+					name="vehicleType"
+					value="car"
+					formControlName="vehicleType">
+					Car
+			</label>
+			<label>
+				<input 
+					type="radio" 
+					formControlName="vehicleType"
+					value="truck"/>
+					Truck
+			</label>
+			<div 
+				*ngIf="washForm.get('vehicleType').value == 'car'" 
+				class="help-block help-block-success">That'll be $5. </div>
+			<div 
+				*ngIf="washForm.get('vehicleType').value == 'truck'" 
+				class="help-block help-block-success">That'll be $10. </div>
+		</div>
+
+		<hr>
+		
+		<div class="form-group">
+			<div [ngClass]="{show: washForm.get('vehicleType').value == 'truck'}" class="truck-questions hidden">
+				<label for="">Tell us more about your truck...</label>
+				<label>
+					<input 
+					type="checkbox" 
+					ngModel
+					formControlName="hasMuddyBed"/>
+					My truck has mud in the bed
+					<div 
+					*ngIf="washForm.get('hasMuddyBed').value == true" 
+					class="help-block help-block-success">That'll be an extra $2. </div>
+				</label>
+				<br>
+				<label>
+					<input 
+					type="checkbox" 
+					ngModel
+					formControlName="hasBedDown"/>
+					My truck bed is let down
+				</label>
+				<br>
+				<span class="help-block" *ngIf="!washForm.get('hasBedDown').valid">
+					Ouch... Sorry, no trucks with bed down are allowed through the car wash. 
+				</span>
+				<hr>
+			</div>
+			<label>
+				<input 
+					type="checkbox" 
+					name="bedDown"
+					ngModel
+					value="bedDown"
+					formControlName="isSecondWash"/>
+				This is the second time I am getting a car wash.
+				<span 
+					*ngIf="washForm.get('isSecondWash').value == true" 
+					class="help-block help-block-success">Congrats, you get a 50% discount today! </span>
+			</label>
+		</div>
+
+		<hr>
+
+		<button 
+			type="submit" 
+			class="btn btn-primary"
+			[disabled]="!washForm.valid"
+			>Submit
+		</button>
+	</form>
+
+	<div 
+		*ngIf="displayPriceMessage" 
+		class="alert alert-success">
+		<button 
+			type="button" 
+			class="close"
+			(click)="hideAlert()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		You're all set, it'll be ${{this.wash.price}}. Enjoy : )
+	</div>
+</div>
