@@ -4,7 +4,7 @@ This project was generated with [Angular 5](https://angular.io/) [Angular CLI](h
 
 ## Live App
 
-Live App [here](https://nicoarrington.github.io/stadskanaalcarwash)
+Live App [here](https://nicoarrington.github.io/stadskanaalCarWash)
 
 ## Build
 
